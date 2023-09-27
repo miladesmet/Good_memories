@@ -1,12 +1,12 @@
-package mila.info507.td.goodmemories.activity
+package activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import mila.info507.td.goodmemories.R
 
-class AccueilActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_accueil)
+        setContentView(R.layout.activity_main)
     }
 }
