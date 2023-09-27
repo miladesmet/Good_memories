@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Good memories</string>
+    <string name="app_categorie_tous">Tous</string>
+    <string name="app_categorie_categorie">Catégorie</string>
 </resources>
