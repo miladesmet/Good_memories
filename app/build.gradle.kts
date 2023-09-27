@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "mila.info507.td.goodmemories"
-        minSdk = 27
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
