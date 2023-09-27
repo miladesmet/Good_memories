@@ -1,4 +1,0 @@
-package activity
-
-class AccueilActivity {
-}
