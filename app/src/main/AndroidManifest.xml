@@ -13,6 +13,9 @@
         android:theme="@style/Theme.GoodMemories"
         tools:targetApi="31">
         <activity
+            android:name=".activity.AddMemorieActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.MemorieActivity"
             android:exported="false"
             android:label="@string/title_activity_memorie"

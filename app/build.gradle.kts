@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "mila.info507.td.goodmemories"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "mila.info507.td.goodmemories"
