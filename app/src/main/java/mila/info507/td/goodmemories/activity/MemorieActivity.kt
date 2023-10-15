@@ -1,12 +1,15 @@
 package mila.info507.td.goodmemories.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import mila.info507.td.goodmemories.R
 import mila.info507.td.goodmemories.model.Memories
 import mila.info507.td.goodmemories.storage.MemoriesStorage
+
 
 class MemorieActivity() : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +20,7 @@ class MemorieActivity() : AppCompatActivity() {
         val bundle: Bundle?= intent.extras
         val position = bundle!!.getInt("position")
 
-        var memorie: Memories? = MemoriesStorage.get(applicationContext).find(position+1)
+        val memorie: Memories? = MemoriesStorage.get(applicationContext).find(position+1)
 
         val title: TextView = findViewById(R.id.title)
         val date: TextView = findViewById(R.id.date)
@@ -32,6 +35,19 @@ class MemorieActivity() : AppCompatActivity() {
             //photo.setImageResource()
             description.text = memorie.description
         }
+
+        //Le bouton retour
+        findViewById<ImageView>(R.id.retour)
+            .setOnClickListener {
+                finish()
+            }
+
+        //val takePhoto =
+        //    registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+        //        if (bitmap != null) photo.setImageBitmap(bitmap)
+        //    }
+        //photo.setOnClickListener { takePhoto.launch(null) }
+
 
     }
 }
