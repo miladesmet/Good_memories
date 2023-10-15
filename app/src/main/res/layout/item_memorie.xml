@@ -7,13 +7,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".activity.MainActivity"
-    android:id="@+id/memorie">
+    android:id="@+id/memorie"
+    android:background="?selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"/>
 
         <ImageView
             android:id="@+id/memorie_photo"
@@ -62,6 +69,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/cercle_shape" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"/>
 
 
     </LinearLayout>
