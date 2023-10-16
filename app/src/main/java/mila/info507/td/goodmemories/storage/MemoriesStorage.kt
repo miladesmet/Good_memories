@@ -13,18 +13,10 @@ object MemoriesStorage {
         return context.getSharedPreferences("mila.info507.td.goodmemories.preferences", Context.MODE_PRIVATE)
     }
 
-    fun getStorage(context: Context): Int {
-        return 0
-    }
-
-    fun setStorage(context: Context, prefStorage: Int) {
-
-    }
-
     fun get(context: Context): Storage<Memories> {
         if (jsonFileStorage == null) {
             jsonFileStorage = MemoriesJSONFileStorage(context)
         }
-        return jsonFileStorage!!////TODO: A RENOMER !!!!!!!!
+        return jsonFileStorage!!
     }
 }

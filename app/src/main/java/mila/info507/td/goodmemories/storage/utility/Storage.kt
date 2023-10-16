@@ -10,6 +10,8 @@ interface Storage<T> {
 
     fun findAll() : List<T>
 
+    fun findAllByEmotion() : List<T>
+
     fun update(id: Int, obj: T)
 
     fun delete(id: Int)
