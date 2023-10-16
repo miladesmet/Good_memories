@@ -31,4 +31,6 @@
     <string name="image_du_memorie">Image du memorie</string>
     <string name="date_memorie">00/00/0000</string>
     <string name="emotion_du_memorie">émotion du memorie</string>
+    <string name="ajouter_un_memorie">Ajouter un memorie.</string>
+    <string name="title">Good memories</string>
 </resources>

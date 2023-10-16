@@ -3,8 +3,10 @@ package mila.info507.td.goodmemories.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import mila.info507.td.goodmemories.R
 import mila.info507.td.goodmemories.adapter.MemoriesAdapter
 import mila.info507.td.goodmemories.model.Memories
@@ -61,6 +63,12 @@ class AccueilActivity : AppCompatActivity() {
                 }
 
             })
+        }
+
+        val add_memorie: View = findViewById(R.id.add_memorie)
+        add_memorie.setOnClickListener {
+            val intent =Intent(this@AccueilActivity, AddMemorieActivity::class.java)
+            startActivity(intent)
         }
 
     }
