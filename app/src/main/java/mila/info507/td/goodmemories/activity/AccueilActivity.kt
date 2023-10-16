@@ -11,6 +11,7 @@ import mila.info507.td.goodmemories.R
 import mila.info507.td.goodmemories.adapter.MemoriesAdapter
 import mila.info507.td.goodmemories.model.Memories
 import mila.info507.td.goodmemories.storage.MemoriesStorage
+import java.io.File
 
 class AccueilActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +34,9 @@ class AccueilActivity : AppCompatActivity() {
 
         })
 
+        //---------------------
+        // Mise en place bouton tous
+        //---------------------
         findViewById<TextView>(R.id.Tous).setOnClickListener{
             println("Tous")
             MemoriesStorage.get(applicationContext).insert(Memories(1, "Câlin d'amoureuses", "photo.png", 3, "10/10/2023", "je l'aime"))
@@ -49,6 +53,9 @@ class AccueilActivity : AppCompatActivity() {
             })
         }
 
+        //---------------------
+        // Mise en place bouton catégories
+        //---------------------
         findViewById<TextView>(R.id.Categorie).setOnClickListener{
             println("Catégorie")
             MemoriesStorage.get(applicationContext).insert(Memories(0, "Voyage en Espagne", "photo.png", 4, "12/10/2023", "c'était drôle"))
@@ -65,6 +72,16 @@ class AccueilActivity : AppCompatActivity() {
             })
         }
 
+        //---------------------
+        // Création du dossier images
+        //---------------------
+        val directory = File(filesDir, "images")
+        if (!directory.exists()) {
+            directory.mkdirs()
+        }
+        //---------------------
+        // Bouton ajout de mémorie
+        //---------------------
         val add_memorie: View = findViewById(R.id.add_memorie)
         add_memorie.setOnClickListener {
             val intent =Intent(this@AccueilActivity, AddMemorieActivity::class.java)

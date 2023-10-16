@@ -42,7 +42,7 @@ class MemorieActivity() : AppCompatActivity() {
             reEm.getEmotionImageUrlById(memorie.emotion){ imageUrl ->  if (imageUrl != "") {
                 ajouteImageEmotion(imageUrl)
             }}
-            //photo.setImageResource()
+            Glide.with(applicationContext).load(memorie.photo).into(photo)
             description.text = memorie.description
         }
 

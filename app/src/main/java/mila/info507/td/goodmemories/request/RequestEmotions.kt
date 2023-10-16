@@ -4,6 +4,8 @@ import android.content.Context
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import org.json.JSONArray
+import org.json.JSONObject
 
 class RequestEmotions(private val context: Context) {
     private val queue = Volley.newRequestQueue(context)
@@ -33,6 +35,30 @@ class RequestEmotions(private val context: Context) {
             { error ->
                 error.printStackTrace()
                 callback("")
+            }
+        )
+        queue.add(emotionRequest)
+    }
+
+
+    fun getEmotions(callback: (JSONArray) -> Unit) {
+        val emotionRequest = JsonObjectRequest(
+            Request.Method.GET, emotionsUrl, null,
+            { response ->
+                try {
+                    val emotionsArray = response.optJSONArray("emotions")
+
+                    if (emotionsArray != null) {
+                        callback(emotionsArray)
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                callback(JSONArray()) // Émotion non trouvée
+            },
+            { error ->
+                error.printStackTrace()
+                callback(JSONArray())
             }
         )
         queue.add(emotionRequest)

@@ -8,6 +8,9 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.CenterInside
 import mila.info507.td.goodmemories.R
 import mila.info507.td.goodmemories.model.Memories
 
@@ -42,10 +45,10 @@ class MemoriesAdapter(private val dataSet: List<Memories>): RecyclerView.Adapter
         return MemoriesHolder(view, mListener)
     }
     override fun onBindViewHolder(holder: MemoriesHolder, position: Int) {
-        holder.photo.setImageResource(R.drawable.cercle_shape)
+        Glide.with(holder.itemView.context).load(dataSet[position].photo).transform(CenterCrop()).into(holder.photo)
         holder.title.text = dataSet[position].title
         holder.date.text = dataSet[position].date
-        holder.photo.setImageResource(R.drawable.cercle_shape)
+
     }
     override fun getItemCount(): Int {
         return dataSet.size
