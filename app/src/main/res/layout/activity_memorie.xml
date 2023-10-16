@@ -96,8 +96,8 @@
 
         <ImageView
             android:id="@+id/emotion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:padding="5dp"
             android:contentDescription="@string/emotion_du_memorie"
             android:src="@mipmap/ic_launcher" />

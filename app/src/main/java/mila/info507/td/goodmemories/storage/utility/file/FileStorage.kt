@@ -65,6 +65,10 @@ abstract class FileStorage<T>(private val context: Context, name: String, extens
         return data.toList().map { pair -> pair.second }
     }
 
+    override fun findAllByEmotion(): List<T> {
+        return data.toList().map { pair -> pair.second }
+    }
+
     override fun update(id: Int, obj: T) {
         data.put(id, create(id, obj)) //l'objet doit stocker son identifiant???
         write()
