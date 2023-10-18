@@ -74,6 +74,7 @@ class AccueilActivity : AppCompatActivity() {
         if (!directory.exists()) {
             directory.mkdirs()
         }
+
         //---------------------
         // Bouton ajout de mémorie
         //---------------------
