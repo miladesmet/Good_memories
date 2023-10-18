@@ -69,7 +69,7 @@ class MemorieActivity() : AppCompatActivity() {
                 val intent = Intent(this, ModifActivity::class.java)
 
                 // On met en extra l'id du memorie à modifier
-                intent.putExtra("idMemorie", position+1)
+                intent.putExtra("idMemorie", position)
 
                 startActivity(intent)
             }

@@ -34,7 +34,7 @@
     <string name="ajouter_un_memorie">Ajouter un memorie.</string>
     <string name="title">Good memories</string>
     <string name="congrats">BRAVO !</string>
-    <string name="congrats_long">Vous venez d'ajouter un beau souvenir à votre collection ! Continuez comme ça !</string>
+    <string name="congrats_long">Vous venez d\'ajouter un beau souvenir à votre collection ! Continuez comme ça !</string>
     <string name="ajouter">Ajouter un autre souvenir</string>
 
 </resources>
