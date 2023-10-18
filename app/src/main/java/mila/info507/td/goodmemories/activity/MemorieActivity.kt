@@ -16,11 +16,6 @@ import java.util.Calendar
 
 class MemorieActivity() : AppCompatActivity() {
 
-    fun ajouteImageEmotion(url: String){
-
-        val emotion: ImageView = findViewById(R.id.emotion)
-        Glide.with(applicationContext).load(url).into(emotion)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,16 +41,20 @@ class MemorieActivity() : AppCompatActivity() {
         val photo: ImageView = findViewById(R.id.photo)
         val description: TextView = findViewById(R.id.description)
 
+
         if (memorie != null) {
+            // On remplit chaque champs avec les infos du memorie
             title.text = memorie.title
             date.text = memorie.date
-            //emotion.setImageResource()
+            description.text = memorie.description
+
+            // On affiche l'image de l'emotion
             val reEm: RequestEmotions= RequestEmotions(applicationContext)
             reEm.getEmotionImageUrlById(memorie.emotion){ imageUrl ->  if (imageUrl != "") {
                 ajouteImageEmotion(imageUrl)
             }}
             Glide.with(applicationContext).load(memorie.photo).into(photo)
-            description.text = memorie.description
+
         }
 
         //Le bouton retour
@@ -67,8 +66,10 @@ class MemorieActivity() : AppCompatActivity() {
         // Le bouton modifier
         findViewById<TextView>(R.id.Modifier)
             .setOnClickListener{
+                // On indique qu'on va lancer Modif activity
                 val intent = Intent(this, ModifActivity::class.java)
 
+                // On met en extra l'id du memorie à modifier
                 intent.putExtra("idMemorie", position+1)
 
                 startActivity(intent)
@@ -79,6 +80,10 @@ class MemorieActivity() : AppCompatActivity() {
 
     }
 
-
+    // Cette fonction ajoute l'image de l'émotion au bon endroit
+    fun ajouteImageEmotion(url: String){
+        val emotion: ImageView = findViewById(R.id.emotion)
+        Glide.with(applicationContext).load(url).into(emotion)
+    }
 
 }

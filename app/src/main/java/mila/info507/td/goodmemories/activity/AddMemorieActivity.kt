@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import mila.info507.td.goodmemories.R
 import mila.info507.td.goodmemories.model.Memories
@@ -27,13 +28,12 @@ import java.util.Locale
 
 class AddMemorieActivity : AppCompatActivity() {
 
-
-    // Pour récuperer le path de l'image ajoutée
-    private var imagePath: String = ""
-
     companion object {
         const val PICK_IMAGE_REQUEST = 1
     }
+
+    // Pour récuperer le path de l'image ajoutée
+    private var imagePath: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,9 +59,14 @@ class AddMemorieActivity : AppCompatActivity() {
 
 
 
-            // On met en place le listener
+            //------------
+            // Mise en place du bouton enregistrer
+            // -----------
             val enregistrer_button : View = findViewById<TextView>(R.id.Enregistrer)
+
             enregistrer_button.setOnClickListener{
+
+                // Récupération du contenu des input
                 val titre = findViewById<EditText>(R.id.input_titre).text.toString()
                 val contenu = findViewById<EditText>(R.id.input_contenu).text.toString()
                 val date = findViewById<EditText>(R.id.input_date).text.toString()
@@ -77,8 +82,13 @@ class AddMemorieActivity : AppCompatActivity() {
                     emotion = selectedRadio.tag as Int
                 }
 
+                // Ajout du memorie dans le json mémoire
                 MemoriesStorage.get(applicationContext).insert(Memories(0, titre, imagePath, emotion, date, contenu))
 
+                // Toast pour informer l'utilisateur que tout c'est bien déroulé
+                Toast.makeText(applicationContext, "Le memorie a bien été ajouté", Toast.LENGTH_SHORT).show()
+
+                // fin de l'activité
                 finish()
 
 
@@ -162,27 +172,22 @@ class AddMemorieActivity : AppCompatActivity() {
 
 
     fun create_emotion_radio(emotions: JSONArray){
+
+        // On selectionne le RadioGroupContainer
         val emotionRadioGroupContainer = findViewById<RadioGroup>(R.id.emotion_group)
 
-
+        // Pour chaque emotion on cree un radio button qu'on ajoute dans le RadioGroupContainer
         for (i in 0 until emotions.length()) {
+
+            // Récupération de l'émotion suivante
             val emotion = emotions.getJSONObject(i)
 
+            // Création du radio button
             val radioButton = RadioButton(this)
             radioButton.text = emotion.getString("title")
             radioButton.tag = emotion.getInt("id")
 
-            val emotionImage = ImageView(this)
-
-            Glide.with(this)
-                .load(emotion.getString("image_url"))
-                .into(emotionImage)
-
-
-            //emotionImage.layoutParams.height = 20
-            //emotionImage.layoutParams.height = 20
-
-            //emotionRadioGroupContainer.addView(emotionImage)
+            // Ajout du radio button dans le RadioGroupContainer
             emotionRadioGroupContainer.addView(radioButton)
 
         }
@@ -195,45 +200,28 @@ class AddMemorieActivity : AppCompatActivity() {
     fun gestion_datePicker() {
 
         // code from : https://www.geeksforgeeks.org/how-to-popup-datepicker-while-clicking-on-edittext-in-android/
-        // on below line we are initializing our variables.
-        //dateEdt: EditText = findViewById<EditText>(R.id.input_date)
 
         val dateEdt: EditText = findViewById(R.id.input_date)
 
-        // on below line we are adding
-        // click listener for our edit text.
         dateEdt.setOnClickListener {
-
-            // on below line we are getting
-            // the instance of our calendar.
             val c = Calendar.getInstance()
 
-            // on below line we are getting
-            // our day, month and year.
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
 
-            // on below line we are creating a
-            // variable for date picker dialog.
             val datePickerDialog = DatePickerDialog(
-                // on below line we are passing context.
+
                 this,
                 { view, year, monthOfYear, dayOfMonth ->
-                    // on below line we are setting
-                    // date to our edit text.
+
                     val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
                     dateEdt.setText(dat)
                 },
-                // on below line we are passing year, month
-                // and day for the selected date in our date picker.
                 year,
                 month,
                 day
             )
-            // at last we are calling show
-            // to display our date picker dialog.
-
             datePickerDialog.show()
         }
 

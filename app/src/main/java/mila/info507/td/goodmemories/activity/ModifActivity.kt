@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import mila.info507.td.goodmemories.R
 import mila.info507.td.goodmemories.model.Memories
@@ -53,12 +54,6 @@ class ModifActivity : AppCompatActivity() {
         // Gestion date Picker
         gestion_datePicker()
 
-
-
-
-
-
-
         if (memorie != null) {
 
             // Récuperation de la liste des émotions pour le radio
@@ -79,10 +74,12 @@ class ModifActivity : AppCompatActivity() {
             // Gestion photo
             val bouton_ajout_image =  findViewById<ImageView>(R.id.ajouter_image)
 
-            Glide.with(this)
-                .load(imagePath)
-                .into(bouton_ajout_image)
-
+            println(imagePath.toString())
+            if (imagePath != "") {
+                Glide.with(this)
+                    .load(imagePath)
+                    .into(bouton_ajout_image)
+            }
 
             bouton_ajout_image.setOnClickListener{
                 pickImageFromGallery()
@@ -100,15 +97,23 @@ class ModifActivity : AppCompatActivity() {
 
 
 
-
             // Bouton supprimer
 
             val bouton_supprimer: TextView= findViewById(R.id.supprimer_memorie)
             bouton_supprimer
                 .setOnClickListener{
                     MemoriesStorage.get(applicationContext).delete(id)
-                    finish()
+
+                    // Je fais ça au lieu de finish pour éviter de retourner sur la page du memorie que je viens de supprimer
+                    val intent = Intent(applicationContext, AccueilActivity::class.java)
+
+                    // Toast pour informer l'utilisateur que tout c'est bien déroulé
+                    Toast.makeText(applicationContext, "Le memorie a bien été supprimé", Toast.LENGTH_SHORT).show()
+
+                    startActivity(intent)
                 }
+
+
 
 
             // Bouton Enregistrer
@@ -136,6 +141,9 @@ class ModifActivity : AppCompatActivity() {
                     // On met à jour le memorie
                     MemoriesStorage.get(applicationContext).update(id, updatedMemory)
 
+                    // Toast pour informer l'utilisateur que tout c'est bien déroulé
+                    Toast.makeText(applicationContext, "Le memorie a bien été mis à jour", Toast.LENGTH_SHORT).show()
+
                     //On indique que tout c'est bien passé
                     val resultIntent = Intent()
                     resultIntent.putExtra("memoryId", id)
@@ -152,20 +160,16 @@ class ModifActivity : AppCompatActivity() {
 
 
         for (i in 0 until emotions.length()) {
+            // Récupération de l'émotion suivante
             val emotion = emotions.getJSONObject(i)
 
+            // Création du radio button
             val radioButton = RadioButton(this)
             radioButton.text = emotion.getString("title")
             radioButton.tag = emotion.getInt("id")
 
-            val emotionImage = ImageView(this)
-
-            Glide.with(this)
-                .load(emotion.getString("image_url"))
-                .into(emotionImage)
-
+            // Ajout du radio button dans le RadioGroupContainer
             emotionRadioGroupContainer.addView(radioButton)
-
         }
 
         // Je l'appelle à la fin de cette fonction pour etre sur que ca a eu le temps de se crée car
@@ -175,21 +179,15 @@ class ModifActivity : AppCompatActivity() {
     }
 
     fun preselectEmotion(emotionIdToSelect: Int) {
-        // On récupère le group
-        val emotionRadioGroupContainer = findViewById<RadioGroup>(R.id.emotion_group)
 
-        println("==================================")
-        println("==================================")
-        println("==================================")
-        println(emotionIdToSelect.toString())
+        // On récupère le group radio
+        val emotionRadioGroupContainer = findViewById<RadioGroup>(R.id.emotion_group)
 
         // On itere sur chaque enfant
         for (i in 0 until emotionRadioGroupContainer.childCount) {
             val radioButton = emotionRadioGroupContainer.getChildAt(i) as RadioButton
             // On récupère le tag du radio button courant
             val emotionId = radioButton.tag as Int
-            println("==================================")
-            println(emotionId.toString())
             // Si c'est celui qu'on cherche on le check
             if (emotionId == emotionIdToSelect) {
                 radioButton.isChecked = true
@@ -198,60 +196,49 @@ class ModifActivity : AppCompatActivity() {
         }
     }
 
+    //-------------------------------
+    // GESTION DE L'INPUT DATE
+    //-------------------------------
     fun gestion_datePicker() {
-        //-------------------------------
-        // GESTION DE L'INPUT DATE
-        //-------------------------------
+
         // code from : https://www.geeksforgeeks.org/how-to-popup-datepicker-while-clicking-on-edittext-in-android/
-        // on below line we are initializing our variables.
-        //dateEdt: EditText = findViewById<EditText>(R.id.input_date)
 
         val dateEdt: EditText = findViewById(R.id.input_date)
 
-        // on below line we are adding
-        // click listener for our edit text.
         dateEdt.setOnClickListener {
-
-            // on below line we are getting
-            // the instance of our calendar.
             val c = Calendar.getInstance()
 
-            // on below line we are getting
-            // our day, month and year.
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
 
-            // on below line we are creating a
-            // variable for date picker dialog.
             val datePickerDialog = DatePickerDialog(
-                // on below line we are passing context.
+
                 this,
                 { view, year, monthOfYear, dayOfMonth ->
-                    // on below line we are setting
-                    // date to our edit text.
+
                     val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
                     dateEdt.setText(dat)
                 },
-                // on below line we are passing year, month
-                // and day for the selected date in our date picker.
                 year,
                 month,
                 day
             )
-            // at last we are calling show
-            // to display our date picker dialog.
-
             datePickerDialog.show()
         }
 
     }
+
 
     private fun pickImageFromGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, ModifActivity.PICK_IMAGE_REQUEST)
     }
+
+    //-------------------------------
+    // GESTION DE L'IMPORTATION DE L'IMAGE
+    //-------------------------------
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -261,6 +248,7 @@ class ModifActivity : AppCompatActivity() {
 
             if (imageUri != null) {
 
+                // Récupération où créatio du dossier cible
                 val directory = File(filesDir, "images")
                 if (!directory.exists()) {
                     directory.mkdirs()

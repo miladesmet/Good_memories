@@ -57,7 +57,7 @@ class AccueilActivity : AppCompatActivity() {
         // Mise en place bouton catégories
         //---------------------
         findViewById<TextView>(R.id.Categorie).setOnClickListener{
-            println("Catégorie")
+
             MemoriesStorage.get(applicationContext).insert(Memories(0, "Voyage en Espagne", "photo.png", 4, "12/10/2023", "c'était drôle"))
 
             adapter= MemoriesAdapter(MemoriesStorage.get(applicationContext).findAllByEmotion())
@@ -79,6 +79,7 @@ class AccueilActivity : AppCompatActivity() {
         if (!directory.exists()) {
             directory.mkdirs()
         }
+
         //---------------------
         // Bouton ajout de mémorie
         //---------------------
