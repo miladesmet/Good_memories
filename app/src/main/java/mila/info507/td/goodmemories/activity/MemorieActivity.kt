@@ -1,5 +1,7 @@
 package mila.info507.td.goodmemories.activity
 
+import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -9,6 +11,7 @@ import mila.info507.td.goodmemories.R
 import mila.info507.td.goodmemories.model.Memories
 import mila.info507.td.goodmemories.request.RequestEmotions
 import mila.info507.td.goodmemories.storage.MemoriesStorage
+import java.util.Calendar
 
 
 class MemorieActivity() : AppCompatActivity() {
@@ -23,12 +26,21 @@ class MemorieActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_memorie)
 
+
+    }
+
+// On met ce code dan OnResume et pas on create pour que le "refresh" apres modif soit auto
+    override fun onResume() {
+        super.onResume()
+
         //recupere les put extra
         val bundle: Bundle?= intent.extras
         val position = bundle!!.getInt("position")
 
+        //On récupère le mémorie
         val memorie: Memories? = MemoriesStorage.get(applicationContext).find(position+1)
 
+        // On récupère chaque element XML à remplir
         val title: TextView = findViewById(R.id.title)
         val date: TextView = findViewById(R.id.date)
         val photo: ImageView = findViewById(R.id.photo)
@@ -52,12 +64,21 @@ class MemorieActivity() : AppCompatActivity() {
                 finish()
             }
 
-        //val takePhoto =
-        //    registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-        //        if (bitmap != null) photo.setImageBitmap(bitmap)
-        //    }
-        //photo.setOnClickListener { takePhoto.launch(null) }
+        // Le bouton modifier
+        findViewById<TextView>(R.id.Modifier)
+            .setOnClickListener{
+                val intent = Intent(this, ModifActivity::class.java)
+
+                intent.putExtra("idMemorie", position+1)
+
+                startActivity(intent)
+            }
+
+
 
 
     }
+
+
+
 }

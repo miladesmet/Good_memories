@@ -27,7 +27,6 @@ import java.util.Locale
 
 class AddMemorieActivity : AppCompatActivity() {
 
-    lateinit var dateEdt : EditText
 
     // Pour récuperer le path de l'image ajoutée
     private var imagePath: String = ""
@@ -35,12 +34,6 @@ class AddMemorieActivity : AppCompatActivity() {
     companion object {
         const val PICK_IMAGE_REQUEST = 1
     }
-
-
-
-
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,50 +55,9 @@ class AddMemorieActivity : AppCompatActivity() {
         val emotions = rem.getEmotions({response -> create_emotion_radio(response)})
 
 
-        //-------------------------------
-        // GESTION DE L'INPUT DATE
-        //-------------------------------
-        // code from : https://www.geeksforgeeks.org/how-to-popup-datepicker-while-clicking-on-edittext-in-android/
-        // on below line we are initializing our variables.
-        dateEdt = findViewById(R.id.input_date)
+        gestion_datePicker()
 
-        // on below line we are adding
-        // click listener for our edit text.
-        dateEdt.setOnClickListener {
 
-            // on below line we are getting
-            // the instance of our calendar.
-            val c = Calendar.getInstance()
-
-            // on below line we are getting
-            // our day, month and year.
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-
-            // on below line we are creating a
-            // variable for date picker dialog.
-            val datePickerDialog = DatePickerDialog(
-                // on below line we are passing context.
-                this,
-                { view, year, monthOfYear, dayOfMonth ->
-                    // on below line we are setting
-                    // date to our edit text.
-                    val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
-                    dateEdt.setText(dat)
-                },
-                // on below line we are passing year, month
-                // and day for the selected date in our date picker.
-                year,
-                month,
-                day
-            )
-            // at last we are calling show
-            // to display our date picker dialog.
-
-            datePickerDialog.show()
-
-            //TODO : Simplifier cette fonction
 
             // On met en place le listener
             val enregistrer_button : View = findViewById<TextView>(R.id.Enregistrer)
@@ -133,7 +85,7 @@ class AddMemorieActivity : AppCompatActivity() {
             }
 
         }
-    }
+
 
 
 
@@ -185,6 +137,14 @@ class AddMemorieActivity : AppCompatActivity() {
 
                 // Maintenant, 'file' contient le chemin de l'image dans le stockage interne
                 imagePath = file.absolutePath
+
+                // On recharge l'image
+                val bouton_ajout_image =  findViewById<ImageView>(R.id.ajouter_image)
+
+                Glide.with(this)
+                    .load(imagePath)
+                    .into(bouton_ajout_image)
+
             }
         }
     }
@@ -195,6 +155,7 @@ class AddMemorieActivity : AppCompatActivity() {
     }
 
 
+    // TODO : Delete if not needed
     fun onImageViewClick(view: View) {
         pickImageFromGallery()
     }
@@ -224,6 +185,56 @@ class AddMemorieActivity : AppCompatActivity() {
             //emotionRadioGroupContainer.addView(emotionImage)
             emotionRadioGroupContainer.addView(radioButton)
 
+        }
+
+    }
+
+    //-------------------------------
+    // GESTION DE L'INPUT DATE
+    //-------------------------------
+    fun gestion_datePicker() {
+
+        // code from : https://www.geeksforgeeks.org/how-to-popup-datepicker-while-clicking-on-edittext-in-android/
+        // on below line we are initializing our variables.
+        //dateEdt: EditText = findViewById<EditText>(R.id.input_date)
+
+        val dateEdt: EditText = findViewById(R.id.input_date)
+
+        // on below line we are adding
+        // click listener for our edit text.
+        dateEdt.setOnClickListener {
+
+            // on below line we are getting
+            // the instance of our calendar.
+            val c = Calendar.getInstance()
+
+            // on below line we are getting
+            // our day, month and year.
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+            // on below line we are creating a
+            // variable for date picker dialog.
+            val datePickerDialog = DatePickerDialog(
+                // on below line we are passing context.
+                this,
+                { view, year, monthOfYear, dayOfMonth ->
+                    // on below line we are setting
+                    // date to our edit text.
+                    val dat = (dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
+                    dateEdt.setText(dat)
+                },
+                // on below line we are passing year, month
+                // and day for the selected date in our date picker.
+                year,
+                month,
+                day
+            )
+            // at last we are calling show
+            // to display our date picker dialog.
+
+            datePickerDialog.show()
         }
 
     }

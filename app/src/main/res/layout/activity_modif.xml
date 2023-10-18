@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:text="Ajouter un memorie "
+            android:text="Mofier votre memorie "
             android:textSize="30dp" />
 
         <Space
@@ -77,7 +77,8 @@
             android:id="@+id/ajouter_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"            android:clickable="true"
+            android:src="@drawable/cercle_shape"
+            android:clickable="true"
             android:contentDescription="Sélectionner une image"
             android:onClick="onImageViewClick" />
 
@@ -184,6 +185,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <TextView
+            android:id="@+id/supprimer_memorie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:text="Supprimer le memorie "
+            android:textSize="20dp" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 
 </LinearLayout>
