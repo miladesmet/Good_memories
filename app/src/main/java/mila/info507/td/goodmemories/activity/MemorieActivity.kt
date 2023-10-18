@@ -27,7 +27,7 @@ class MemorieActivity() : AppCompatActivity() {
         val bundle: Bundle?= intent.extras
         val position = bundle!!.getInt("position")
 
-        val memorie: Memories? = MemoriesStorage.get(applicationContext).find(position+1)
+        val memorie: Memories? = MemoriesStorage.get(applicationContext).find(position)
 
         val title: TextView = findViewById(R.id.title)
         val date: TextView = findViewById(R.id.date)

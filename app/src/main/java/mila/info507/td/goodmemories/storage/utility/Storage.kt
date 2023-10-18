@@ -1,5 +1,7 @@
 package mila.info507.td.goodmemories.storage
 
+import mila.info507.td.goodmemories.model.Memories
+
 interface Storage<T> {
 
     fun insert(obj: T): Int
@@ -10,7 +12,7 @@ interface Storage<T> {
 
     fun findAll() : List<T>
 
-    fun findAllByEmotion() : List<T>
+    fun findAllByEmotion(id: Int) : List<Memories>
 
     fun update(id: Int, obj: T)
 

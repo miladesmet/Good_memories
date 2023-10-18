@@ -1,6 +1,7 @@
 package td.info507.mykount.storage.utility.file
 
 import android.content.Context
+import mila.info507.td.goodmemories.model.Memories
 import mila.info507.td.goodmemories.storage.Storage
 import java.io.BufferedReader
 import java.io.FileNotFoundException
@@ -58,15 +59,22 @@ abstract class FileStorage<T>(private val context: Context, name: String, extens
     }
 
     override fun find(id: Int): T? {
-        return data[id]
+        println("-------------------------------")
+        println(id)
+        for (memory in data.values) {
+            if ((memory is Memories) && (memory.id == id)) {
+                return memory
+            }
+        }
+        return null
     }
 
     override fun findAll(): List<T> {
-        return data.toList().map { pair -> pair.second }
+        return data.values.map { it }
     }
 
-    override fun findAllByEmotion(): List<T> {
-        return data.toList().map { pair -> pair.second }
+    override fun findAllByEmotion(id: Int): List<Memories> {
+        return data.values.filterIsInstance<Memories>().filter { it.emotion == id }
     }
 
     override fun update(id: Int, obj: T) {
