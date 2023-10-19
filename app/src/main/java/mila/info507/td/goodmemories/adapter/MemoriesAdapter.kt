@@ -3,14 +3,11 @@ package mila.info507.td.goodmemories.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.CenterInside
 import mila.info507.td.goodmemories.R
 import mila.info507.td.goodmemories.model.Memories
 
@@ -45,9 +42,11 @@ class MemoriesAdapter(private val dataSet: List<Memories>): RecyclerView.Adapter
         return MemoriesHolder(view, mListener)
     }
     override fun onBindViewHolder(holder: MemoriesHolder, position: Int) {
+        val memo = dataSet[position]
         Glide.with(holder.itemView.context).load(dataSet[position].photo).transform(CenterCrop()).into(holder.photo)
-        holder.title.text = dataSet[position].title
-        holder.date.text = dataSet[position].date
+        holder.title.text = memo.title
+        holder.date.text = memo.date
+        Glide.with(holder.itemView.context).load(memo.emotion).into(holder.emotion)
 
     }
     override fun getItemCount(): Int {

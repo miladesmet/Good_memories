@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import mila.info507.td.goodmemories.R
 
 class Emotion (
@@ -54,8 +53,6 @@ class EmotionsAdapter(private val dataSet: List<Emotion>): RecyclerView.Adapter<
         val emotion = dataSet[position]
         Glide.with(holder.itemView.context).load(emotion.image_url).into(holder.imageViewHolder)
         holder.TextViewHolder.text = emotion.title
-        println("---------------------")
-        println(emotion.image_url)
     }
     override fun getItemCount(): Int {
         return dataSet.size

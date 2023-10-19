@@ -4,13 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import mila.info507.td.goodmemories.R
 import mila.info507.td.goodmemories.adapter.Emotion
 import mila.info507.td.goodmemories.adapter.EmotionsAdapter
@@ -105,8 +100,6 @@ class AccueilActivity : AppCompatActivity() {
         adapter.setOnItemClickListener(object : MemoriesAdapter.OnItemClickListener{
             override fun OnItemClick(position: Int) {
                 val intent =Intent(this@AccueilActivity, MemorieActivity::class.java)
-                println("MemoriesStorage.get(applicationContext).findAllByEmotion(id)[position].id")
-                println(MemoriesStorage.get(applicationContext).findAllByEmotion(id)[position].id)
                 intent.putExtra("position", MemoriesStorage.get(applicationContext).findAllByEmotion(id)[position].id)
                 startActivity(intent)
             }
@@ -120,12 +113,10 @@ class AccueilActivity : AppCompatActivity() {
         list.adapter=  adapter_emotion
         adapter_emotion.setOnItemClickListener(object : EmotionsAdapter.OnItemClickListener{
             override fun OnItemClick(position: Int) {
-                println("CACA________________")
                 loadMemoriesByEmotion(list_emotions[position].id)
             }
 
         })
-        println("bababa__________________________")
     }
 
     fun create_emotion_list(emotions: JSONArray){
@@ -138,8 +129,6 @@ class AccueilActivity : AppCompatActivity() {
             emotions_list.add(Emotion(emotion.getInt("id"), emotion.getString("image_url"), emotion.getString("title")))
 
         }
-        println("emotions_list.toList()--------------------------------------")
-        println(emotions.toString())
         if (emotions.length()!=0) {
             list_emotions = emotions_list.toList()
         }

@@ -1,6 +1,5 @@
 package mila.info507.td.goodmemories.activity
 
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
@@ -11,7 +10,6 @@ import mila.info507.td.goodmemories.R
 import mila.info507.td.goodmemories.model.Memories
 import mila.info507.td.goodmemories.request.RequestEmotions
 import mila.info507.td.goodmemories.storage.MemoriesStorage
-import java.util.Calendar
 
 
 class MemorieActivity() : AppCompatActivity() {

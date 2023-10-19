@@ -18,7 +18,6 @@ import mila.info507.td.goodmemories.model.Memories
 import mila.info507.td.goodmemories.request.RequestEmotions
 import mila.info507.td.goodmemories.storage.MemoriesStorage
 import org.json.JSONArray
-import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat

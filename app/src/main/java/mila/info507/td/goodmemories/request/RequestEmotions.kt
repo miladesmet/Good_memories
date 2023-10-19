@@ -5,7 +5,6 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
-import org.json.JSONObject
 
 class RequestEmotions(private val context: Context) {
     private val queue = Volley.newRequestQueue(context)
