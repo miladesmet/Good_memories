@@ -34,18 +34,7 @@ class AccueilActivity : AppCompatActivity() {
 
         //création du RecyclerView avec tous les memories
         list = findViewById(R.id.memories_list)
-        adapter= MemoriesAdapter(MemoriesStorage.get(applicationContext).findAll())
-        list.adapter=  adapter
-        adapter= MemoriesAdapter(MemoriesStorage.get(applicationContext).findAll())
-        list.adapter=  adapter
-        adapter.setOnItemClickListener(object : MemoriesAdapter.OnItemClickListener{
-            override fun OnItemClick(position: Int) {
-                val intent =Intent(this@AccueilActivity, MemorieActivity::class.java)
-                intent.putExtra("position", MemoriesStorage.get(applicationContext).findAll()[position].id)
-                startActivity(intent)
-            }
-
-        })
+        loadAllMemories()
 
         //---------------------
         // Mise en place bouton tous
