@@ -1,11 +1,14 @@
 package mila.info507.td.goodmemories.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import mila.info507.td.goodmemories.R
 import mila.info507.td.goodmemories.adapter.Emotion
 import mila.info507.td.goodmemories.adapter.EmotionsAdapter
@@ -21,6 +24,9 @@ class AccueilActivity : AppCompatActivity() {
     private lateinit var list : RecyclerView
     private lateinit var adapter: MemoriesAdapter
     private lateinit var adapter_emotion: EmotionsAdapter
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +36,15 @@ class AccueilActivity : AppCompatActivity() {
         rem.getEmotions { response -> create_emotion_list(response) }
 
         MemoriesStorage.get(applicationContext).insert(Memories(0, "Voyage en Espagne", "photo.png", 1, "102/10/2023", "1 c'était drôle"))
-        MemoriesStorage.get(applicationContext).insert(Memories(0, "Câlin d'amoureuses", "photo.png", 2, "100/10/2023", "2 je l'aime"))
+        MemoriesStorage.get(applicationContext).insert(Memories(0, "Câlin", "photo.png", 2, "100/10/2023", "2 <3>"))
+
+        //refresh
+        swipeRefreshLayout = findViewById(R.id.swipe)
+        swipeRefreshLayout.setOnRefreshListener{
+            loadAllMemories()
+            rem.getEmotions { response -> create_emotion_list(response) }
+            swipeRefreshLayout.isRefreshing = false
+        }
 
         //création du RecyclerView avec tous les memories
         list = findViewById(R.id.memories_list)
