@@ -7,11 +7,10 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
-import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import mila.info507.td.goodmemories.R
 import mila.info507.td.goodmemories.adapter.Emotion
 import mila.info507.td.goodmemories.adapter.EmotionsAdapter
@@ -27,6 +26,9 @@ class AccueilActivity : AppCompatActivity() {
     private lateinit var list : RecyclerView
     private lateinit var adapter: MemoriesAdapter
     private lateinit var adapter_emotion: EmotionsAdapter
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,29 +91,19 @@ class AccueilActivity : AppCompatActivity() {
                     "02/09/2023",
                     "Hier soir, j'ai assisté à mon premier concert en plein air, et c'était une expérience incroyable. Le ciel était clair, les étoiles brillaient, et la musique résonnait dans l'air. Mon groupe préféré était sur scène, et je me sentais en symbiose avec la foule enthousiaste. Les chansons emblématiques, la danse et la camaraderie avec d'autres fans ont créé une ambiance électrique. J'ai pris une photo mémorable lorsque les feux d'artifice ont éclairé le ciel pour clore le spectacle. C'était un mélange d'émotions, de bonheur pur et d'excitation qui restera gravé dans ma mémoire. "
                 )
-            )
+            )}
+
+        //refresh
+        swipeRefreshLayout = findViewById(R.id.swipe)
+        swipeRefreshLayout.setOnRefreshListener{
+            loadAllMemories()
+            rem.getEmotions { response -> create_emotion_list(response) }
+            swipeRefreshLayout.isRefreshing = false
         }
 
         //création du RecyclerView avec tous les memories
         list = findViewById(R.id.memories_list)
-
-
-        var all_Memories : List<Memories> = MemoriesStorage.get(applicationContext).findAll()
-        adapter= MemoriesAdapter(all_Memories)
-        list.adapter=  adapter
-
-        removeEmptyMessage()
-        if ( MemoriesStorage.get(applicationContext).size() ==0) {
-            empty_memorie()
-        }
-        adapter.setOnItemClickListener(object : MemoriesAdapter.OnItemClickListener{
-            override fun OnItemClick(position: Int) {
-                val intent =Intent(this@AccueilActivity, MemorieActivity::class.java)
-                intent.putExtra("position", MemoriesStorage.get(applicationContext).findAll()[position].id)
-                startActivity(intent)
-            }
-
-        })
+        loadAllMemories()
 
         //---------------------
         // Mise en place bouton tous
@@ -149,6 +141,7 @@ class AccueilActivity : AppCompatActivity() {
     private fun loadAllMemories() {
             // Supprime le message s'il existe
             removeEmptyMessage()
+
             adapter = MemoriesAdapter(MemoriesStorage.get(applicationContext).findAll())
             list.adapter = adapter
 
