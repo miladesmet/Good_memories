@@ -71,25 +71,50 @@ class AddMemorieActivity : AppCompatActivity() {
                 val date = findViewById<EditText>(R.id.input_date).text.toString()
                 val selectedIdEmotionRadio = findViewById<RadioGroup>(R.id.emotion_group).checkedRadioButtonId
 
+                // Validation du formulaire
 
-
-                // Gestion emotion non sélectionnée
-                var emotion = 1
-
-                if (selectedIdEmotionRadio != -1) {
-                    val selectedRadio= findViewById<RadioButton>(selectedIdEmotionRadio)
-                    emotion = selectedRadio.tag as Int
+                var validation : Boolean = true
+                if (titre.isEmpty()){
+                    Toast.makeText(applicationContext, "Veuillez remplir le titre", Toast.LENGTH_SHORT).show()
+                    validation = false
                 }
 
-                // Ajout du memorie dans le json mémoire
-                MemoriesStorage.get(applicationContext).insert(Memories(0, titre, imagePath, emotion, date, contenu))
+                if (date.isEmpty()){
+                    Toast.makeText(applicationContext, "Veuillez remplir la date", Toast.LENGTH_SHORT).show()
+                    validation = false
+                }
 
-                // Toast pour informer l'utilisateur que tout c'est bien déroulé
-                Toast.makeText(applicationContext, "Le memorie a bien été ajouté", Toast.LENGTH_SHORT).show()
+                if (contenu.isEmpty()){
+                    Toast.makeText(applicationContext, "Veuillez remplir le contenu", Toast.LENGTH_SHORT).show()
+                    validation = false
+                }
 
-                // fin de l'activité
-                finish()
 
+
+
+                if (validation){
+                    // Gestion emotion non sélectionnée
+                    var emotion = 1
+
+                    if (selectedIdEmotionRadio != -1) {
+                        val selectedRadio = findViewById<RadioButton>(selectedIdEmotionRadio)
+                        emotion = selectedRadio.tag as Int
+                    }
+
+                    // Ajout du memorie dans le json mémoire
+                    MemoriesStorage.get(applicationContext)
+                        .insert(Memories(0, titre, imagePath, emotion, date, contenu))
+
+                    // Toast pour informer l'utilisateur que tout c'est bien déroulé
+                    Toast.makeText(
+                        applicationContext,
+                        "Le memorie a bien été ajouté",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    // fin de l'activité
+                    finish()
+                }
 
             }
 

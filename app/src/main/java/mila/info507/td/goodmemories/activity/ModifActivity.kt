@@ -128,27 +128,50 @@ class ModifActivity : AppCompatActivity() {
 
                     val newDescription: String = description.text.toString()
 
-                    // Nouveau memory
-                    val updatedMemory: Memories = Memories(
-                        id,
-                        newTitle,
-                        imagePath,
-                        memorie.emotion,
-                        newDate,
-                        newDescription
-                    )
+                    // Validation du formulaire
 
-                    // On met à jour le memorie
-                    MemoriesStorage.get(applicationContext).update(id, updatedMemory)
+                    var validation : Boolean = true
+                    if (newTitle.isEmpty()){
+                        Toast.makeText(applicationContext, "Veuillez remplir le titre", Toast.LENGTH_SHORT).show()
+                        validation = false
+                    }
 
-                    // Toast pour informer l'utilisateur que tout c'est bien déroulé
-                    Toast.makeText(applicationContext, "Le memorie a bien été mis à jour", Toast.LENGTH_SHORT).show()
+                    if (newDate.isEmpty()){
+                        Toast.makeText(applicationContext, "Veuillez remplir la date", Toast.LENGTH_SHORT).show()
+                        validation = false
+                    }
 
-                    //On indique que tout c'est bien passé
-                    val resultIntent = Intent()
-                    resultIntent.putExtra("memoryId", id)
-                    setResult(Activity.RESULT_OK, resultIntent)
-                    finish()
+                    if (newDescription.isEmpty()){
+                        Toast.makeText(applicationContext, "Veuillez remplir le contenu", Toast.LENGTH_SHORT).show()
+                        validation = false
+                    }
+                    if (validation) {
+                        // Nouveau memory
+                        val updatedMemory: Memories = Memories(
+                            id,
+                            newTitle,
+                            imagePath,
+                            memorie.emotion,
+                            newDate,
+                            newDescription
+                        )
+
+                        // On met à jour le memorie
+                        MemoriesStorage.get(applicationContext).update(id, updatedMemory)
+
+                        // Toast pour informer l'utilisateur que tout c'est bien déroulé
+                        Toast.makeText(
+                            applicationContext,
+                            "Le memorie a bien été mis à jour",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        //On indique que tout c'est bien passé
+                        val resultIntent = Intent()
+                        resultIntent.putExtra("memoryId", id)
+                        setResult(Activity.RESULT_OK, resultIntent)
+                        finish()
+                    }
 
                 }
         }
