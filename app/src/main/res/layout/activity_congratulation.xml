@@ -72,7 +72,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
-            android:src="@drawable/Congratulation_img"
+            android:src="@drawable/congrat_img"
             android:contentDescription="@string/image_du_memorie" />
 
         <Space
