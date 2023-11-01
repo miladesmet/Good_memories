@@ -36,7 +36,7 @@ class AccueilActivity : AppCompatActivity() {
 
         // On va chercher les émotions
         val rem = RequestEmotions(applicationContext)
-        rem.getEmotions { response -> create_emotion_list(response) }
+        rem.getEmotions { response -> create_emotion_list(response); loadAllMemories() }
 
         // Création de certain mémorie par défaut pour la démo - à enlever pour une vrai utilisation
         var len_memories = MemoriesStorage.get(applicationContext).size()
@@ -103,7 +103,7 @@ class AccueilActivity : AppCompatActivity() {
 
         //création du RecyclerView avec tous les memories
         list = findViewById(R.id.memories_list)
-        loadAllMemories()
+
 
         //---------------------
         // Mise en place bouton tous
@@ -142,7 +142,7 @@ class AccueilActivity : AppCompatActivity() {
             // Supprime le message s'il existe
             removeEmptyMessage()
 
-            adapter = MemoriesAdapter(MemoriesStorage.get(applicationContext).findAll())
+            adapter = MemoriesAdapter(MemoriesStorage.get(applicationContext).findAll(), list_emotions)
             list.adapter = adapter
 
             adapter.setOnItemClickListener(object : MemoriesAdapter.OnItemClickListener {
@@ -164,7 +164,7 @@ class AccueilActivity : AppCompatActivity() {
     private fun loadMemoriesByEmotion(id: Int) {
         // Supprime le message s'il existe
         removeEmptyMessage()
-        adapter = MemoriesAdapter(MemoriesStorage.get(applicationContext).findAllByEmotion(id))
+        adapter = MemoriesAdapter(MemoriesStorage.get(applicationContext).findAllByEmotion(id), list_emotions)
         list.adapter=  adapter
         adapter.setOnItemClickListener(object : MemoriesAdapter.OnItemClickListener{
             override fun OnItemClick(position: Int) {
