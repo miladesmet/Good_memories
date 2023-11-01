@@ -2,5 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="light_blue">#deeeff</color>
+    <color name="red">#de5252</color>
+    <color name="light_purple">#f6f0fc</color>
+    <color name="light_deep_blue">#f0f1fc</color>
     <color name="ic_add_background_pressed">#575593</color>
 </resources>

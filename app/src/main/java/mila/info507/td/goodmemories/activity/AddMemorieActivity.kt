@@ -56,8 +56,13 @@ class AddMemorieActivity : AppCompatActivity() {
 
         gestion_datePicker()
 
-
-
+            //------------
+            // Mise en place du bouton annuler
+            // -----------
+            val annuler_button : View = findViewById<TextView>(R.id.annuler)
+             annuler_button.setOnClickListener{
+                 finish()
+             }
             //------------
             // Mise en place du bouton enregistrer
             // -----------

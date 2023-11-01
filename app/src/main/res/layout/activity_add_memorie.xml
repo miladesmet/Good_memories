@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/light_purple">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,7 +78,8 @@
             android:id="@+id/ajouter_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"            android:clickable="true"
+            android:src="@mipmap/ic_launcher"
+            android:clickable="true"
             android:contentDescription="Sélectionner une image"
             android:onClick="onImageViewClick" />
 
@@ -162,7 +164,8 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:hint="Entrez le contenu de votre memorie"
-            android:inputType="text"/>
+            android:inputType="text"
+            />
 
 
     </LinearLayout>
