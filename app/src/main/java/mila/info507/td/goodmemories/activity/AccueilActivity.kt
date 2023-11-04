@@ -1,14 +1,17 @@
 package mila.info507.td.goodmemories.activity
 
+
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import mila.info507.td.goodmemories.R
@@ -20,6 +23,7 @@ import mila.info507.td.goodmemories.request.RequestEmotions
 import mila.info507.td.goodmemories.storage.MemoriesStorage
 import org.json.JSONArray
 import java.io.File
+
 
 class AccueilActivity : AppCompatActivity() {
     private lateinit var list_emotions : List<Emotion>
@@ -36,6 +40,7 @@ class AccueilActivity : AppCompatActivity() {
 
         // On va chercher les émotions
         val rem = RequestEmotions(applicationContext)
+        // On les mets dans lise_emotion
         rem.getEmotions { response -> create_emotion_list(response) }
 
         // Création de certain mémorie par défaut pour la démo - à enlever pour une vrai utilisation
@@ -136,13 +141,22 @@ class AccueilActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        //---------------------
+        // Bouton réglage
+        //---------------------
+        /*val button_reglage: View = findViewById(R.id.reglage)
+        button_reglage.setOnClickListener{
+            showPopupMenu(view)
+        }
+        */
+
     }
 
     private fun loadAllMemories() {
             // Supprime le message s'il existe
             removeEmptyMessage()
 
-            adapter = MemoriesAdapter(MemoriesStorage.get(applicationContext).findAll())
+            adapter = MemoriesAdapter(MemoriesStorage.get(applicationContext).findAll(),list_emotions)
             list.adapter = adapter
 
             adapter.setOnItemClickListener(object : MemoriesAdapter.OnItemClickListener {
@@ -193,14 +207,14 @@ class AccueilActivity : AppCompatActivity() {
     }
 
     fun create_emotion_list(emotions: JSONArray){
+
+        // initialisation de la liste d'emotion
         val emotions_list : ArrayList<Emotion> = ArrayList()
 
-
+        // recupere chaque emotion du json et ça l'ajoute dans la liste
         for (i in 0 until emotions.length()) {
             val emotion = emotions.getJSONObject(i)
-
             emotions_list.add(Emotion(emotion.getInt("id"), emotion.getString("image_url"), emotion.getString("title")))
-
         }
         if (emotions.length()!=0) {
             list_emotions = emotions_list.toList()
@@ -222,4 +236,34 @@ class AccueilActivity : AppCompatActivity() {
 
         LinearLayoutCentre.removeAllViews()
     }
+
+
+
+    //------------------------------------------
+    // Gestion menu
+    //-----------------------------------------
+/*
+    private fun showPopupMenu(view: View) {
+        val popupMenu = PopupMenu(this, view)
+        popupMenu.getMenuInflater().inflate(R.menu.menu_settings, popupMenu.getMenu())
+        popupMenu.setOnMenuItemClickListener(object : OnMenuItemClickListener() {
+            fun onMenuItemClick(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.menu_item_1 ->                         // Action lorsque l'option 1 est sélectionnée
+                        true
+
+                    R.id.menu_item_2 ->                         // Action lorsque l'option 2 est sélectionnée
+                        true
+
+                    else -> false
+                }
+            }
+        })
+        popupMenu.show()
+    }
+
+*/
+
+
+
 }

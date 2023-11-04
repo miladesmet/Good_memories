@@ -77,6 +77,7 @@ class AddMemorieActivity : AppCompatActivity() {
                 val selectedIdEmotionRadio = findViewById<RadioGroup>(R.id.emotion_group).checkedRadioButtonId
 
                 // Validation du formulaire
+                // Vérification que tout est bien remplis
 
                 var validation : Boolean = true
                 if (titre.isEmpty()){
@@ -96,7 +97,7 @@ class AddMemorieActivity : AppCompatActivity() {
 
 
 
-
+                // Si tout est bien remplis on ajoute le memorie
                 if (validation){
                     // Gestion emotion non sélectionnée
                     var emotion = 1
@@ -117,8 +118,14 @@ class AddMemorieActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
 
+                    // On ouvre l'activité congrat
+                    val intent = Intent(this, CongratulationActivity::class.java)
+                    startActivity(intent)
+
                     // fin de l'activité
                     finish()
+
+
                 }
 
             }

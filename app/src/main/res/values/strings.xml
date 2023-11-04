@@ -2,16 +2,16 @@
     <string name="app_name">Good memories</string>
     <string name="app_categorie_tous">Tous</string>
     <string name="app_categorie_categorie">Catégorie</string>
-    <string name="title_activity_memorie">MemorieActivity</string>
+    <string name="title_activity_memorie" translatable="false">MemorieActivity</string>
 
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="first_fragment_label" translatable="false">First Fragment</string>
+    <string name="second_fragment_label" translatable="false">Second Fragment</string>
+    <string name="next" translatable="false">Next</string>
+    <string name="previous" translatable="false">Previous</string>
 
 
-    <string name="lorem_ipsum">
+    <string name="lorem_ipsum" translatable="false">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
         dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad
@@ -25,16 +25,23 @@
         molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor
         bibendum, vel congue leo egestas.
     </string>
-    <string name="retour"><![CDATA[<]]></string>
+    <string name="retour" translatable="false"><![CDATA[<]]></string>
     <string name="modifier">Modifier</string>
     <string name="titre_du_memorie">Titre du memorie</string>
     <string name="image_du_memorie">Image du memorie</string>
-    <string name="date_memorie">00/00/0000</string>
+    <string name="date_memorie" translatable="false">00/00/0000</string>
     <string name="emotion_du_memorie">émotion du memorie</string>
     <string name="ajouter_un_memorie">Ajouter un memorie.</string>
-    <string name="title">Good memories</string>
+    <string name="title" translatable="false">Good memories</string>
     <string name="congrats">BRAVO !</string>
     <string name="congrats_long">Vous venez d\'ajouter un beau souvenir à votre collection ! Continuez comme ça !</string>
-    <string name="ajouter">Ajouter un autre souvenir</string>
+    <string name="ajouter">Ajouter un autre souvenir.</string>
+    <string name="modifier_votre_memorie">Modifier votre memorie</string>
+    <string name="enregistrer">Enregistrer</string>
+    <string name="hint_title">Entrez le titre de votre memorie</string>
+    <string name="date_label">Date :</string>
+    <string name="title_label">Titre :</string>
+    <string name="contenu_label">Contenu :</string>
+    <string name="supprimer_le_memorie">Supprimer le memorie</string>
 
 </resources>

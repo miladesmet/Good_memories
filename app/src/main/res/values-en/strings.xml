@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Good memories</string>
+    <string name="app_categorie_tous">All</string>
+    <string name="app_categorie_categorie">Categories</string>
+    <string name="modifier">Modify</string>
+    <string name="titre_du_memorie">Title</string>
+    <string name="image_du_memorie">Image</string>
+    <string name="emotion_du_memorie">memorie\'s emotion</string>
+    <string name="ajouter_un_memorie">Add a memorie</string>
+    <string name="congrats">CONGRATS !</string>
+    <string name="congrats_long">You just add a beautiful memorie ! Keep going !</string>
+    <string name="ajouter">Add another memorie.</string>
+</resources>

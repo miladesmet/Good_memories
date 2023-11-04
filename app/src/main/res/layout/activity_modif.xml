@@ -33,7 +33,7 @@
             android:paddingTop="15dp"
             android:paddingBottom="5dp"
             android:paddingRight="15dp"
-            android:text="Enregistrer"
+            android:text="@string/enregistrer"
             />
 
 
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:textAlignment="center"
-        android:text="Mofier votre memorie "
+        android:text="@string/modifier_votre_memorie"
         android:textSize="30dp" />
 
 
@@ -91,14 +91,14 @@
             android:paddingTop="15dp"
             android:paddingBottom="5dp"
             android:paddingLeft="15dp"
-            android:text="Titre : "
+            android:text="@string/title_label"
             android:textSize="20dp" />
 
         <EditText
             android:id="@+id/input_titre"
             android:layout_height="48dp"
             android:layout_width="wrap_content"
-            android:hint="Entrez le titre de votre memorie"
+            android:hint="@string/hint_title"
             android:inputType="text"/>
 
 
@@ -115,7 +115,7 @@
             android:paddingTop="15dp"
             android:paddingBottom="5dp"
             android:paddingLeft="15dp"
-            android:text="Date : "
+            android:text="@string/date_label"
             android:textSize="20dp" />
 
         <EditText
@@ -143,7 +143,7 @@
             android:paddingTop="15dp"
             android:paddingBottom="5dp"
             android:paddingLeft="15dp"
-            android:text="Contenu : "
+            android:text="@string/contenu_label"
             android:textSize="20dp" />
 
         <EditText
@@ -188,7 +188,7 @@
             android:paddingTop="15dp"
             android:layout_marginBottom="10dp"
             android:paddingLeft="15dp"
-            android:text="Supprimer le memorie "
+            android:text="@string/supprimer_le_memorie"
             android:textSize="20dp"
             android:textColor="@color/red"/>
         <Space
