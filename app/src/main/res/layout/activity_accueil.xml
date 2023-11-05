@@ -11,7 +11,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="75dp"
-        android:src="@drawable/top_flower">
+        android:src="@drawable/top_bubble">
 
     </ImageView>
 
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:textSize="35sp"
-                android:paddingTop="30dp"
+                android:paddingTop="5dp"
                 android:text="@string/title"
                 />
 

@@ -10,11 +10,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import mila.info507.td.goodmemories.R
 import mila.info507.td.goodmemories.model.Memories
+import mila.info507.td.goodmemories.request.RequestEmotions
 
 class MemoriesAdapter(private val dataSet: List<Memories>): RecyclerView.Adapter<MemoriesAdapter.MemoriesHolder>() {
 
     //Gestion du click sur un élement de la liste.
     private lateinit var mListener: OnItemClickListener
+
+    // Nécessaire pour mettre en place le rem
+    private lateinit var parent_memorie: ViewGroup;
+
     interface OnItemClickListener {
         fun OnItemClick(position: Int)
     }
@@ -37,6 +42,7 @@ class MemoriesAdapter(private val dataSet: List<Memories>): RecyclerView.Adapter
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoriesHolder {
+        parent_memorie = parent
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_memorie, parent, false)
         return MemoriesHolder(view, mListener)
@@ -46,7 +52,12 @@ class MemoriesAdapter(private val dataSet: List<Memories>): RecyclerView.Adapter
         Glide.with(holder.itemView.context).load(dataSet[position].photo).transform(CenterCrop()).into(holder.photo)
         holder.title.text = memo.title
         holder.date.text = memo.date
-        Glide.with(holder.itemView.context).load(memo.emotion).into(holder.emotion)
+
+        val reEm: RequestEmotions = RequestEmotions(parent_memorie.context)
+        reEm.getEmotionImageUrlById(memo.emotion){ imageUrl ->  if (imageUrl != "") {
+            Glide.with(holder.itemView.context).load(imageUrl).into(holder.emotion)
+        }}
+
 
     }
     override fun getItemCount(): Int {

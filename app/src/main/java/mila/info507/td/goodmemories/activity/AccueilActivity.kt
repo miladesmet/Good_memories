@@ -156,7 +156,7 @@ class AccueilActivity : AppCompatActivity() {
             // Supprime le message s'il existe
             removeEmptyMessage()
 
-            adapter = MemoriesAdapter(MemoriesStorage.get(applicationContext).findAll(),list_emotions)
+            adapter = MemoriesAdapter(MemoriesStorage.get(applicationContext).findAll())
             list.adapter = adapter
 
             adapter.setOnItemClickListener(object : MemoriesAdapter.OnItemClickListener {

@@ -50,6 +50,8 @@ class MemorieActivity() : AppCompatActivity() {
             reEm.getEmotionImageUrlById(memorie.emotion){ imageUrl ->  if (imageUrl != "") {
                 ajouteImageEmotion(imageUrl)
             }}
+
+            // On affiche la photo
             Glide.with(applicationContext).load(memorie.photo).into(photo)
 
         }
