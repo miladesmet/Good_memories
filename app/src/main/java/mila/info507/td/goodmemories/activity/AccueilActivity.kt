@@ -3,6 +3,7 @@ package mila.info507.td.goodmemories.activity
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.Gravity
@@ -37,10 +38,8 @@ class AccueilActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_accueil)
 
-        // On va chercher les émotions
+        // On crée un objet rem
         val rem = RequestEmotions(applicationContext)
-        // On les mets dans lise_emotion
-        rem.getEmotions { response -> create_emotion_list(response) }
 
         // Création de certains mémories par défaut pour la démo - à enlever pour une vraie utilisation
         var len_memories = MemoriesStorage.get(applicationContext).size()
@@ -99,33 +98,59 @@ class AccueilActivity : AppCompatActivity() {
                 )
             )}
 
+
+        //création du RecyclerView avec tous les memories
+        list = findViewById(R.id.memories_list)
+
+        // Mise en place bouton catégories
+        val catégorieButton = findViewById<TextView>(R.id.Categorie)
+        val tousButton = findViewById<TextView>(R.id.Tous)
+
+
         //Mise en place du refresh
         swipeRefreshLayout = findViewById(R.id.swipe)
         swipeRefreshLayout.setOnRefreshListener{
+
             loadAllMemories()
+            // Mettre le texte "Tous" en gras
+            tousButton.setTypeface(null, Typeface.BOLD)
+
+            // Remettre le texte "Catégorie" en normal
+            catégorieButton.setTypeface(null, Typeface.NORMAL)
+
             rem.getEmotions { response -> create_emotion_list(response) }
             // On arrete l'animation de refresh
             swipeRefreshLayout.isRefreshing = false
         }
 
-        //création du RecyclerView avec tous les memories
-        list = findViewById(R.id.memories_list)
 
-        // On load une premiere fois tous les memories
-        loadAllMemories()
 
         //---------------------
         // Mise en place bouton tous
         //---------------------
-        findViewById<TextView>(R.id.Tous).setOnClickListener {
+        tousButton.setOnClickListener {
             loadAllMemories()
+
+            // Mettre le texte "Tous" en gras
+            tousButton.setTypeface(null, Typeface.BOLD)
+
+            // Remettre le texte "Catégorie" en normal
+            catégorieButton.setTypeface(null, Typeface.NORMAL)
+
         }
 
         //---------------------
         // Mise en place bouton catégories
         //---------------------
-        findViewById<TextView>(R.id.Categorie).setOnClickListener {
+        catégorieButton.setOnClickListener {
             loadAllEmotion()
+
+            // Mettre le texte "Catégorie" en gras
+            catégorieButton.setTypeface(null, Typeface.BOLD)
+
+            // Remettre le texte "Tous" en normal
+            tousButton.setTypeface(null, Typeface.NORMAL)
+
         }
 
         //---------------------
@@ -148,6 +173,28 @@ class AccueilActivity : AppCompatActivity() {
 
     }
 
+    // Mise à jour auto lors du resume
+    override fun onResume() {
+        super.onResume()
+
+
+        val catégorieButton = findViewById<TextView>(R.id.Categorie)
+        val tousButton = findViewById<TextView>(R.id.Tous)
+
+        loadAllMemories()
+        // Mettre le texte "Tous" en gras
+        tousButton.setTypeface(null, Typeface.BOLD)
+
+        // Remettre le texte "Catégorie" en normal
+        catégorieButton.setTypeface(null, Typeface.NORMAL)
+
+        // On va chercher les émotions
+        val rem = RequestEmotions(applicationContext)
+
+        // On les mets dans lise_emotion
+        rem.getEmotions { response -> create_emotion_list(response) }
+
+    }
     private fun loadAllMemories() {
             // Supprime le message de liste vide s'il existe
             removeEmptyMessage()
@@ -246,20 +293,20 @@ class AccueilActivity : AppCompatActivity() {
         }
     }
 
-        fun empty_memorie(){
-            // On récupere le LinearLayout central
-            var LinearLayoutCentre = findViewById<LinearLayout>(R.id.layout_centre)
+    fun empty_memorie(){
+        // On récupere le LinearLayout central
+        var LinearLayoutCentre = findViewById<LinearLayout>(R.id.layout_centre)
 
-            // On crée un élément TextView
-            val TextEmpty = TextView(this)
-            TextEmpty.text = "Vous n'avez pas encore de memories ici... Ajoutez-en !"
-            TextEmpty.gravity = Gravity.CENTER
-            TextEmpty.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
-            TextEmpty.setTextColor(Color.GRAY)
+        // On crée un élément TextView
+        val TextEmpty = TextView(this)
+        TextEmpty.text = "Vous n'avez pas encore de memories ici... Ajoutez-en !"
+        TextEmpty.gravity = Gravity.CENTER
+        TextEmpty.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
+        TextEmpty.setTextColor(Color.GRAY)
 
-            //On l'ajoute dans le LinearLayout central
-            LinearLayoutCentre.addView(TextEmpty)
-        }
+        //On l'ajoute dans le LinearLayout central
+        LinearLayoutCentre.addView(TextEmpty)
+    }
 
     private fun removeEmptyMessage() {
         // On récupere le LinearLayout central

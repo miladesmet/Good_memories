@@ -6,10 +6,12 @@ import org.json.JSONObject
 import td.info507.mykount.storage.utility.file.JSONFileStorage
 
 class MemoriesJSONFileStorage(context: Context) : JSONFileStorage<Memories>(context, "memories") {
+
     override fun create(id: Int, obj: Memories): Memories {
         return Memories(id, obj.title, obj.photo, obj.emotion, obj.date, obj.description)
     }
 
+    // Prends un memorie et renvoit un json
     override fun objectToJson(id: Int, obj: Memories): JSONObject {
         val json= JSONObject()
         //on ajoute dans le jsonobject toutes les infos qu'on a de base, et on utilise les static
@@ -23,6 +25,7 @@ class MemoriesJSONFileStorage(context: Context) : JSONFileStorage<Memories>(cont
         return json
     }
 
+    // Prends un json et renvoit un memorie
     override fun jsonToObject(json: JSONObject): Memories {
         return Memories(
             json.getInt(Memories.ID),

@@ -100,7 +100,8 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            />
 
         <TextView
             android:id="@+id/button_ajouter"
@@ -110,8 +111,7 @@
             android:layout_gravity="center"
             android:text="@string/ajouter"
             android:padding="5dp"
-
-
+            android:textColor="#211aa3"
 
             />
 

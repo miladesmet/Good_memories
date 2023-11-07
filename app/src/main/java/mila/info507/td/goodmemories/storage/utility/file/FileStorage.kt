@@ -21,8 +21,6 @@ abstract class FileStorage<T>(private val context: Context, name: String, extens
     private fun read() {
         try {
             val input = context.openFileInput(fileName)
-            //Pour voir dans quel fichier c'est stocké
-            println(context.filesDir)
             if (input != null) {
                 val builder = StringBuilder()
                 var bufferedReader = BufferedReader(InputStreamReader(input))
@@ -59,8 +57,6 @@ abstract class FileStorage<T>(private val context: Context, name: String, extens
     }
 
     override fun find(id: Int): T? {
-        println("-------------------------------")
-        println(id)
         for (memory in data.values) {
             if ((memory is Memories) && (memory.id == id)) {
                 return memory

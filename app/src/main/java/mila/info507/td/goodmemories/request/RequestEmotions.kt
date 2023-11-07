@@ -22,6 +22,7 @@ class RequestEmotions(private val context: Context) {
                 try {
                     val emotionsArray = response.optJSONArray("emotions")
                     if (emotionsArray != null) {
+                        // On parcours les emotions jusqu'a trouvé celle qui a le bon id et la donner à la fonction callback
                         for (i in 0 until emotionsArray.length()) {
                             val emotion = emotionsArray.getJSONObject(i)
                             val id = emotion.getInt("id")
@@ -34,13 +35,16 @@ class RequestEmotions(private val context: Context) {
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
+                // On a pas l'emotion avec l'id demandé
                 callback("") // Émotion non trouvée
             },
+            // On a pas réussi à obtenir le json
             { error ->
                 error.printStackTrace()
                 callback("")
             }
         )
+        // On ajoute notre requete à la "queue" pour qu'elle soit lancée
         queue.add(emotionRequest)
     }
 
@@ -58,13 +62,16 @@ class RequestEmotions(private val context: Context) {
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-                callback(JSONArray()) // Émotion non trouvée
+                callback(JSONArray()) // Émotions non trouvées
             },
+            // La requete c'est mal passée
             { error ->
                 error.printStackTrace()
                 callback(JSONArray())
             }
         )
+
+        // On ajoute notre requete à la "queue" pour qu'elle soit lancée
         queue.add(emotionRequest)
     }
 }

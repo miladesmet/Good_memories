@@ -24,22 +24,13 @@
         android:paddingBottom="50dp">
 
 
-        <TextView
-            android:id="@+id/reglage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="textEnd"
-            android:textSize="20sp"
-            android:text="reglage"
-            />
-
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:textSize="35sp"
-                android:paddingTop="5dp"
+                android:paddingTop="20dp"
                 android:text="@string/title"
                 />
 

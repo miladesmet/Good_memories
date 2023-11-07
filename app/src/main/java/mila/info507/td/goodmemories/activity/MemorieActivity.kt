@@ -15,6 +15,8 @@ import mila.info507.td.goodmemories.storage.MemoriesStorage
 class MemorieActivity() : AppCompatActivity() {
 
 
+    var REQUEST_EXIT = 0;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_memorie)
@@ -74,12 +76,23 @@ class MemorieActivity() : AppCompatActivity() {
                 // On met en extra l'id du memorie à modifier
                 intent.putExtra("idMemorie", position)
 
-                startActivity(intent)
+                startActivityForResult(intent, REQUEST_EXIT)
             }
 
 
 
 
+    }
+
+    // Gestion du cas de supression du memorie
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode==REQUEST_EXIT){
+            if (resultCode == RESULT_CANCELED){
+                finish()
+            }
+        }
     }
 
     // Cette fonction ajoute l'image de l'émotion au bon endroit

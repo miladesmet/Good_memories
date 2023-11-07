@@ -26,6 +26,9 @@ class Emotion (
     }
 }
 
+//==============================================
+// Emotion adapter
+//==============================================
 class EmotionsAdapter(private val dataSet: List<Emotion>): RecyclerView.Adapter<EmotionsAdapter.EmotionsHolder>() {
 
     //permet gestion du click sur un élement de la liste.
@@ -42,7 +45,9 @@ class EmotionsAdapter(private val dataSet: List<Emotion>): RecyclerView.Adapter<
         mListener= listener
     }
 
-
+    //==============================================
+    // Emotion holder
+    //==============================================
     class EmotionsHolder(itemView: View, listener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
 
         // Récupère les "champs" à remplir

@@ -107,14 +107,11 @@ class ModifActivity : AppCompatActivity() {
                     // Suppression de memorie courant
                     MemoriesStorage.get(applicationContext).delete(id)
 
-                    // Je fais ça au lieu de finish pour éviter de retourner sur la page du memorie que je viens de supprimer
-                    // Ferme l'activité en dessous
-                    val parentActivity = getParent()
-                    parentActivity.finish()
 
                     // Toast pour informer l'utilisateur que tout c'est bien déroulé
                     Toast.makeText(applicationContext, "Le memorie a bien été supprimé", Toast.LENGTH_SHORT).show()
 
+                    setResult(RESULT_CANCELED, null)
                     // On termine l'activité
                     finish()
                 }
