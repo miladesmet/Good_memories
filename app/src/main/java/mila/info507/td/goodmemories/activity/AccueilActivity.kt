@@ -6,10 +6,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.Gravity
-import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +24,8 @@ import java.io.File
 
 
 class AccueilActivity : AppCompatActivity() {
-    private lateinit var list_emotions : List<Emotion>
+
+    private lateinit var list_emotions : List<Emotion> //- Liste d'emotion récupérée en externe
     private lateinit var list : RecyclerView
     private lateinit var adapter: MemoriesAdapter
     private lateinit var adapter_emotion: EmotionsAdapter
@@ -43,9 +42,11 @@ class AccueilActivity : AppCompatActivity() {
         // On les mets dans lise_emotion
         rem.getEmotions { response -> create_emotion_list(response) }
 
-        // Création de certain mémorie par défaut pour la démo - à enlever pour une vrai utilisation
+        // Création de certains mémories par défaut pour la démo - à enlever pour une vraie utilisation
         var len_memories = MemoriesStorage.get(applicationContext).size()
 
+
+        // Création d'une BdD exemple
         if (len_memories ==0) {
             MemoriesStorage.get(applicationContext).insert(
                 Memories(
@@ -98,16 +99,19 @@ class AccueilActivity : AppCompatActivity() {
                 )
             )}
 
-        //refresh
+        //Mise en place du refresh
         swipeRefreshLayout = findViewById(R.id.swipe)
         swipeRefreshLayout.setOnRefreshListener{
             loadAllMemories()
             rem.getEmotions { response -> create_emotion_list(response) }
+            // On arrete l'animation de refresh
             swipeRefreshLayout.isRefreshing = false
         }
 
         //création du RecyclerView avec tous les memories
         list = findViewById(R.id.memories_list)
+
+        // On load une premiere fois tous les memories
         loadAllMemories()
 
         //---------------------
@@ -141,25 +145,24 @@ class AccueilActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //---------------------
-        // Bouton réglage
-        //---------------------
-        /*val button_reglage: View = findViewById(R.id.reglage)
-        button_reglage.setOnClickListener{
-            showPopupMenu(view)
-        }
-        */
 
     }
 
     private fun loadAllMemories() {
-            // Supprime le message s'il existe
+            // Supprime le message de liste vide s'il existe
             removeEmptyMessage()
 
+            // On donne la liste de tous les memories au constructeur de MemoriesAdapter et on le stocke dans la variable adapter
             adapter = MemoriesAdapter(MemoriesStorage.get(applicationContext).findAll())
+            // On relie cet adapter à la recyclerView
             list.adapter = adapter
 
+            //-------------------------------
+            // Gestion du click sur un memorie du RecyclerView
+            //-------------------------------
+            // Ici on utilise le fait que l'adapteur utilise une interface OnItemClickListener
             adapter.setOnItemClickListener(object : MemoriesAdapter.OnItemClickListener {
+                // On redefinit la methode onItemClick
                 override fun OnItemClick(position: Int) {
                     val intent = Intent(this@AccueilActivity, MemorieActivity::class.java)
                     intent.putExtra(
@@ -168,18 +171,27 @@ class AccueilActivity : AppCompatActivity() {
                     )
                     startActivity(intent)
                 }
-
             })
+
+        // Dans le cas où il n'y a pas de memorie à afficher nous créeons un message l'indiquant
         if (MemoriesStorage.get(applicationContext).size() ==0) {
             empty_memorie()
         }
     }
 
     private fun loadMemoriesByEmotion(id: Int) {
-        // Supprime le message s'il existe
+        // Supprime le message "vide" s'il existe
         removeEmptyMessage()
+
+        // On donne la liste de tous les memories ayant l'emotion donnée au constructeur de MemoriesAdapter et on le stocke dans la variable adapter
         adapter = MemoriesAdapter(MemoriesStorage.get(applicationContext).findAllByEmotion(id))
+        // On relie cet adapter à la recyclerView
         list.adapter=  adapter
+
+        //-------------------------------
+        // Gestion du click sur un memorie du RecyclerView
+        //-------------------------------
+        // Ici on utilise le fait que l'adapteur utilise une interface OnItemClickListener
         adapter.setOnItemClickListener(object : MemoriesAdapter.OnItemClickListener{
             override fun OnItemClick(position: Int) {
                 val intent =Intent(this@AccueilActivity, MemorieActivity::class.java)
@@ -189,15 +201,26 @@ class AccueilActivity : AppCompatActivity() {
 
         })
 
+        // Dans le cas où il n'y a pas de memorie à afficher nous créeons un message l'indiquant
         if (MemoriesStorage.get(applicationContext).findAllByEmotion(id).isEmpty()) {
             empty_memorie()
         }
     }
 
     private fun loadAllEmotion() {
+        // Supprime le message "vide" s'il existe
         removeEmptyMessage()
+
+        // On donne la liste de toutes les émotions au constructeur EmotionsAdapter
         adapter_emotion = EmotionsAdapter(list_emotions)
+
+        // On relie cet adapter à la recyclerView
         list.adapter=  adapter_emotion
+
+        //-------------------------------
+        // Gestion du click sur une émotion du RecyclerView
+        //-------------------------------
+        // Ici on utilise le fait que l'adapteur utilise une interface OnItemClickListener
         adapter_emotion.setOnItemClickListener(object : EmotionsAdapter.OnItemClickListener{
             override fun OnItemClick(position: Int) {
                 loadMemoriesByEmotion(list_emotions[position].id)
@@ -206,6 +229,7 @@ class AccueilActivity : AppCompatActivity() {
         })
     }
 
+    // fonction callback
     fun create_emotion_list(emotions: JSONArray){
 
         // initialisation de la liste d'emotion
@@ -216,53 +240,35 @@ class AccueilActivity : AppCompatActivity() {
             val emotion = emotions.getJSONObject(i)
             emotions_list.add(Emotion(emotion.getInt("id"), emotion.getString("image_url"), emotion.getString("title")))
         }
+
         if (emotions.length()!=0) {
             list_emotions = emotions_list.toList()
         }
     }
 
         fun empty_memorie(){
+            // On récupere le LinearLayout central
             var LinearLayoutCentre = findViewById<LinearLayout>(R.id.layout_centre)
+
+            // On crée un élément TextView
             val TextEmpty = TextView(this)
-            TextEmpty.text = "Vous n'avez pas encore de memorie ici... Ajoutez-en !"
+            TextEmpty.text = "Vous n'avez pas encore de memories ici... Ajoutez-en !"
             TextEmpty.gravity = Gravity.CENTER
             TextEmpty.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18F)
             TextEmpty.setTextColor(Color.GRAY)
+
+            //On l'ajoute dans le LinearLayout central
             LinearLayoutCentre.addView(TextEmpty)
         }
 
     private fun removeEmptyMessage() {
+        // On récupere le LinearLayout central
         val LinearLayoutCentre = findViewById<LinearLayout>(R.id.layout_centre)
-
+        // On suppime tout ces "enfants"
         LinearLayoutCentre.removeAllViews()
     }
 
 
-
-    //------------------------------------------
-    // Gestion menu
-    //-----------------------------------------
-/*
-    private fun showPopupMenu(view: View) {
-        val popupMenu = PopupMenu(this, view)
-        popupMenu.getMenuInflater().inflate(R.menu.menu_settings, popupMenu.getMenu())
-        popupMenu.setOnMenuItemClickListener(object : OnMenuItemClickListener() {
-            fun onMenuItemClick(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.menu_item_1 ->                         // Action lorsque l'option 1 est sélectionnée
-                        true
-
-                    R.id.menu_item_2 ->                         // Action lorsque l'option 2 est sélectionnée
-                        true
-
-                    else -> false
-                }
-            }
-        })
-        popupMenu.show()
-    }
-
-*/
 
 
 

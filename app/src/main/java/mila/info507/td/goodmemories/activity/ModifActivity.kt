@@ -27,9 +27,7 @@ import java.util.Locale
 
 class ModifActivity : AppCompatActivity() {
 
-    companion object {
-        const val PICK_IMAGE_REQUEST = 1
-    }
+    val PICK_IMAGE_FROM_GALLERY = 1
 
     // Pour récuperer le path de l'image ajoutée
     private var imagePath: String = ""
@@ -57,67 +55,75 @@ class ModifActivity : AppCompatActivity() {
         if (memorie != null) {
 
             // Récuperation de la liste des émotions pour le radio
-
             val rem : RequestEmotions = RequestEmotions(applicationContext)
-            val emotions = rem.getEmotions({response -> create_emotion_radio_with_preselection(response, memorie.emotion)})
+            val emotions = rem.getEmotions { response ->
+                create_emotion_radio_with_preselection(
+                    response,
+                    memorie.emotion
+                )
+            }
 
-            // On leur attributs des valeurs de préremplissage
-
+            // On leur attribut des valeurs de préremplissage
             title.setText(memorie.title)
             date.setText(memorie.date)
             description.setText(memorie.description)
 
-            // init du chemin image
+            // initialisation du chemin image
             imagePath =memorie.photo
 
 
             // Gestion photo
             val bouton_ajout_image =  findViewById<ImageView>(R.id.ajouter_image)
 
-            println(imagePath.toString())
+            // Si le memorie qu'on modifie avait déjà une image associée, on la place dans le bouton d'ajout d'image
             if (imagePath != "") {
                 Glide.with(this)
                     .load(imagePath)
                     .into(bouton_ajout_image)
             }
 
+            //----------------------------
+            // Gestion bouton ajouter photo
+            //----------------------------
             bouton_ajout_image.setOnClickListener{
                 pickImageFromGallery()
             }
 
-
+            //----------------------------
             // Bouton annuler
-
+            //----------------------------
             val bouton_annuler: TextView= findViewById(R.id.annuler)
             bouton_annuler
                 .setOnClickListener{
                     finish()
                 }
 
-
-
-
+            //----------------------------
             // Bouton supprimer
-
+            //----------------------------
             val bouton_supprimer: TextView= findViewById(R.id.supprimer_memorie)
             bouton_supprimer
                 .setOnClickListener{
+                    // Suppression de memorie courant
                     MemoriesStorage.get(applicationContext).delete(id)
 
                     // Je fais ça au lieu de finish pour éviter de retourner sur la page du memorie que je viens de supprimer
-                    val intent = Intent(applicationContext, AccueilActivity::class.java)
+                    // Ferme l'activité en dessous
+                    val parentActivity = getParent()
+                    parentActivity.finish()
 
                     // Toast pour informer l'utilisateur que tout c'est bien déroulé
                     Toast.makeText(applicationContext, "Le memorie a bien été supprimé", Toast.LENGTH_SHORT).show()
 
-                    startActivity(intent)
+                    // On termine l'activité
+                    finish()
                 }
 
 
 
-
+            //------------------------
             // Bouton Enregistrer
-
+            //------------------------
             val bouton_enregistrer: TextView = findViewById(R.id.Enregistrer)
             bouton_enregistrer
                 .setOnClickListener {
@@ -125,11 +131,15 @@ class ModifActivity : AppCompatActivity() {
                     // On récupere les valeurs du formulaire
                     val newTitle: String = title.text.toString()
                     val newDate: String = date.text.toString()
-
                     val newDescription: String = description.text.toString()
+                    val selectedIdEmotionRadio = findViewById<RadioGroup>(R.id.emotion_group).checkedRadioButtonId
+                    var newEmotion = 1
+                    if (selectedIdEmotionRadio != -1) {
+                        val selectedRadio = findViewById<RadioButton>(selectedIdEmotionRadio)
+                        newEmotion = selectedRadio.tag as Int
+                    }
 
                     // Validation du formulaire
-
                     var validation : Boolean = true
                     if (newTitle.isEmpty()){
                         Toast.makeText(applicationContext, "Veuillez remplir le titre", Toast.LENGTH_SHORT).show()
@@ -151,7 +161,7 @@ class ModifActivity : AppCompatActivity() {
                             id,
                             newTitle,
                             imagePath,
-                            memorie.emotion,
+                            newEmotion,
                             newDate,
                             newDescription
                         )
@@ -166,10 +176,12 @@ class ModifActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        //On indique que tout c'est bien passé
+                        //On indique que tout c'est bien passé au parent
                         val resultIntent = Intent()
                         resultIntent.putExtra("memoryId", id)
                         setResult(Activity.RESULT_OK, resultIntent)
+
+                        // On termine l'activité
                         finish()
                     }
 
@@ -179,9 +191,10 @@ class ModifActivity : AppCompatActivity() {
 
 
     fun create_emotion_radio_with_preselection(emotions: JSONArray, id_emotion: Int){
+        // Récupere le RadioGroup
         val emotionRadioGroupContainer = findViewById<RadioGroup>(R.id.emotion_group)
 
-
+        // Pour chaque emotion du json on remplie un RadioButton
         for (i in 0 until emotions.length()) {
             // Récupération de l'émotion suivante
             val emotion = emotions.getJSONObject(i)
@@ -253,10 +266,14 @@ class ModifActivity : AppCompatActivity() {
     }
 
 
+    //-------------------------------
+    // GESTION DE L'AJOUT / MODIFICATION DE L4IMAGE
+    //-------------------------------
     private fun pickImageFromGallery() {
+        // Lance le service de choix d'image dans la galerie
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, ModifActivity.PICK_IMAGE_REQUEST)
+        startActivityForResult(intent,PICK_IMAGE_FROM_GALLERY)
     }
 
     //-------------------------------
@@ -266,12 +283,14 @@ class ModifActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+        // Si on a demander de choisir une image et que ca s'est bien passé
+        if (requestCode == PICK_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
+
             val imageUri: Uri? = data?.data
 
             if (imageUri != null) {
 
-                // Récupération où créatio du dossier cible
+                // Récupération ou création du dossier cible
                 val directory = File(filesDir, "images")
                 if (!directory.exists()) {
                     directory.mkdirs()

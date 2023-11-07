@@ -1,5 +1,6 @@
 package mila.info507.td.goodmemories.model
 
+// Model d'un memorie
 class Memories (
     val id: Int,
     val title: String,

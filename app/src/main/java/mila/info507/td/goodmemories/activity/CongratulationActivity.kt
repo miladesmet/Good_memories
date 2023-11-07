@@ -10,6 +10,7 @@ import mila.info507.td.goodmemories.R
 class CongratulationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // On relie l'activité au layout
         setContentView(R.layout.activity_congratulation)
 
 

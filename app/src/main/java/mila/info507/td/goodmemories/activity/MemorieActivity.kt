@@ -18,18 +18,17 @@ class MemorieActivity() : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_memorie)
-
-
     }
 
-// On met ce code dan OnResume et pas on create pour que le "refresh" apres modif soit auto
+// On met ce code dans onResume et pas onCreate pour que le "refresh" apres une modification soit automatique
     override fun onResume() {
         super.onResume()
 
-        //recupere les put extra
+        //On recupere les put extra
         val bundle: Bundle?= intent.extras
         val position = bundle!!.getInt("position")
 
+        // On récupère le mémorie à afficher
         val memorie: Memories? = MemoriesStorage.get(applicationContext).find(position)
 
         // On récupère chaque element XML à remplir
@@ -51,18 +50,22 @@ class MemorieActivity() : AppCompatActivity() {
                 ajouteImageEmotion(imageUrl)
             }}
 
-            // On affiche la photo
+            // On affiche la photo du memorie
             Glide.with(applicationContext).load(memorie.photo).into(photo)
 
         }
 
+        //------------------------
         //Le bouton retour
+        //------------------------
         findViewById<ImageView>(R.id.retour)
             .setOnClickListener {
                 finish()
             }
 
+        //------------------------
         // Le bouton modifier
+        //------------------------
         findViewById<TextView>(R.id.Modifier)
             .setOnClickListener{
                 // On indique qu'on va lancer Modif activity

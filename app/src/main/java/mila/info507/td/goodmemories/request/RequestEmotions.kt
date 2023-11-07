@@ -11,8 +11,13 @@ class RequestEmotions(private val context: Context) {
     private val emotionsUrl = "http://51.68.91.213/gr-1-1/emotions.json"
 
     fun getEmotionImageUrlById(emotionId: Int, callback: (String) -> Unit) {
+
+        // On crée un Json Object Request pour faire un requette vers notre url et qu'elle nous renvoie le json contenant les émotions
         val emotionRequest = JsonObjectRequest(
-            Request.Method.GET, emotionsUrl, null,
+            Request.Method.GET,
+            emotionsUrl,
+            null,
+            // Fonction callback
             { response ->
                 try {
                     val emotionsArray = response.optJSONArray("emotions")

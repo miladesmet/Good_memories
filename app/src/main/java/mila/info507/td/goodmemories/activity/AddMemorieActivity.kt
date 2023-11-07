@@ -34,7 +34,6 @@ import java.util.Locale
 class AddMemorieActivity : AppCompatActivity() {
 
     private val PICK_IMAGE_FROM_GALLERY = 1
-    private val PICK_IMAGE_FROM_CAMERA = 2
 
     // Pour récuperer le path de l'image ajoutée
     private var imagePath: String = ""
@@ -44,21 +43,18 @@ class AddMemorieActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_memorie)
 
 
-        // Demande de permission à la camera
-
-
-        //PHOTO
+        //----------------------------
+        // Gestion bouton ajouter photo
+        //----------------------------
         val bouton_ajout_image =  findViewById<ImageView>(R.id.ajouter_image)
-
         bouton_ajout_image.setOnClickListener{
-            showImagePickerDialog()
+            pickImageFromGallery()
         }
 
 
-        // Récuperation de la liste des émotions pour le radio
-
-        val rem : RequestEmotions = RequestEmotions(applicationContext)
-        val emotions = rem.getEmotions({response -> create_emotion_radio(response)})
+        // Récuperation de la liste des émotions pour le radio et on crée le radio
+        val rem = RequestEmotions(applicationContext)
+        rem.getEmotions({response -> create_emotion_radio(response)})
 
 
         gestion_datePicker()
@@ -70,6 +66,7 @@ class AddMemorieActivity : AppCompatActivity() {
              annuler_button.setOnClickListener{
                  finish()
              }
+
             //------------
             // Mise en place du bouton enregistrer
             // -----------
@@ -149,19 +146,27 @@ class AddMemorieActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        // Si on a demander de choisir une image et que ca s'est bien passé
         if (requestCode == PICK_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
-            val imageUri: Uri? = data?.extras?.get("data") as Uri
+
+            val imageUri: Uri? = data?.data
 
             if (imageUri != null) {
+
+                // Récupération ou création du dossier cible
                 val directory = File(filesDir, "images")
                 if (!directory.exists()) {
                     directory.mkdirs()
                 }
 
+                // création d'un nom unique
                 val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
                 val fileName = "IMG_$timestamp.jpg"
+
+                // Créez un fichier pour l'image
                 val file = File(directory, fileName)
 
+                //Copie le fichier image sélectionné dans le répertoire interne
                 try {
                     val inputStream = contentResolver.openInputStream(imageUri)
                     val outputStream = FileOutputStream(file)
@@ -182,79 +187,17 @@ class AddMemorieActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
 
+                // Maintenant, 'file' contient le chemin de l'image dans le stockage interne
                 imagePath = file.absolutePath
 
+                // On recharge l'image
                 val bouton_ajout_image = findViewById<ImageView>(R.id.ajouter_image)
-                bouton_ajout_image.setOnClickListener {
-                    showImagePickerDialog()
-                }
 
                 Glide.with(this)
                     .load(imagePath)
                     .into(bouton_ajout_image)
             }
-        } else if (requestCode == PICK_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
 
-            println("=====================")
-            println(data)
-            println("=====================")
-            println(data?.data)
-            println("=====================")
-            println(data?.extras)
-            println("=====================")
-            println(data?.extras?.get("data"))
-
-
-            if (data != null ) {
-                println("=====================")
-                println("On est dedans")
-                println("=====================")
-                val imageUri: Uri = data?.extras?.get("data") as Uri
-                println("=====================")
-                println(imageUri)
-                val directory = File(filesDir, "images")
-                if (!directory.exists()) {
-                    directory.mkdirs()
-                }
-
-                val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-                val fileName = "IMG_$timestamp.jpg"
-                val file = File(directory, fileName)
-
-                try {
-                    println("=====================")
-                    println("On est dedans 2")
-                    println("=====================")
-                    val inputStream = contentResolver.openInputStream(imageUri)
-                    val outputStream = FileOutputStream(file)
-
-                    val buffer = ByteArray(1024)
-                    var bytesRead: Int
-                    while (true) {
-                        bytesRead = inputStream?.read(buffer) ?: -1
-                        if (bytesRead == -1) {
-                            break
-                        }
-                        outputStream.write(buffer, 0, bytesRead)
-                    }
-
-                    inputStream?.close()
-                    outputStream.close()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-
-                imagePath = file.absolutePath
-
-                val bouton_ajout_image = findViewById<ImageView>(R.id.ajouter_image)
-                bouton_ajout_image.setOnClickListener {
-                    showImagePickerDialog()
-                }
-
-                Glide.with(this)
-                    .load(imagePath)
-                    .into(bouton_ajout_image)
-            }
         }
     }
 
@@ -262,12 +205,6 @@ class AddMemorieActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY)
-    }
-
-
-    // TODO : Delete if not needed
-    fun onImageViewClick(view: View) {
-        pickImageFromGallery()
     }
 
 
@@ -328,65 +265,8 @@ class AddMemorieActivity : AppCompatActivity() {
     }
 
 
-    //----------------------------------------------------------------
-    // Gestion choix caméra
-    //----------------------------------------------------------------
 
 
-    // Dialog pour demander de choisir ou récupérer la photo
-    private fun showImagePickerDialog() {
-        // Création du tableau des options
-        val options = arrayOf("Galerie", "Appareil photo")
-        // Création de la boîte de dialogue
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Choisir une image depuis:")
-        builder.setItems(options) { dialog, which ->
-            when (which) {
-                0 -> pickImageFromGallery()
-                1 -> captureImageFromCamera()
-            }
-        }
-        // Affichage de la boîte de dialogue
-        builder.show()
-    }
-
-    // Gestion du choix d'ouvrir la caméra
-    private fun captureImageFromCamera() {
-        val perm = checkPermission(Manifest.permission.CAMERA)
-        if (perm) {
-            try {
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                if (intent.resolveActivity(packageManager) != null) {
-                    startActivityForResult(intent, PICK_IMAGE_FROM_CAMERA)
-                } else {
-                    Toast.makeText(
-                        this,
-                        "L'application de l'appareil photo n'est pas disponible.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(
-                    this,
-                    "Une erreur est survenue lors de l'ouverture de l'appareil photo.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
-
-    private fun checkPermission(permission: String): Boolean {
-        var res = true
-        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
-                ActivityCompat.requestPermissions(this, arrayOf(permission), 0)
-            }
-            res = false
-        }
-        return res
-    }
 
 
 }
