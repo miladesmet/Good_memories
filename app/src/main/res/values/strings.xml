@@ -35,13 +35,13 @@
     <string name="title" translatable="false">Good memories</string>
     <string name="congrats">BRAVO !</string>
     <string name="congrats_long">Vous venez d\'ajouter un beau souvenir à votre collection ! Continuez comme ça !</string>
-    <string name="ajouter">Ajouter un autre souvenir.</string>
-    <string name="modifier_votre_memorie">Modifier votre memorie</string>
-    <string name="enregistrer">Enregistrer</string>
-    <string name="hint_title">Entrez le titre de votre memorie</string>
-    <string name="date_label">Date :</string>
-    <string name="title_label">Titre :</string>
-    <string name="contenu_label">Contenu :</string>
-    <string name="supprimer_le_memorie">Supprimer le memorie</string>
+    <string name="ajouter">Ajouter un autre souvenir</string>
+    <string name="modifier_votre_memorie" translatable="false">Modifier votre memorie</string>
+    <string name="enregistrer" translatable="false">Enregistrer</string>
+    <string name="hint_title" translatable="false">Entrez le titre de votre memorie</string>
+    <string name="date_label" translatable="false">Date :</string>
+    <string name="title_label" translatable="false">Titre :</string>
+    <string name="contenu_label" translatable="false">Contenu :</string>
+    <string name="supprimer_le_memorie" translatable="false">Supprimer le memorie</string>
 
 </resources>
